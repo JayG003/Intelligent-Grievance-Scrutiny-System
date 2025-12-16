@@ -10,14 +10,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Send message to Discord
+      - name: Send detailed message to Discord
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         run: |
           curl -X POST \
           -H "Content-Type: application/json" \
-          -d '{
-            "username": "GitHub Bot",
-            "content": "🚀 New push to **Intelligent-Grievance-Scrutiny-System**\n📂 Repository updated on branch **main**"
-          }' \
+          -d "{
+            \"username\": \"GitHub Bot\",
+            \"content\": \"🚀 **New Push Detected**\n\n👤 **Author:** ${{ github.actor }}\n🌿 **Branch:** ${{ github.ref_name }}\n📝 **Commit:** ${{ github.event.head_commit.message }}\n🔗 **View Commit:** ${{ github.event.head_commit.url }}\"
+          }" \
           $DISCORD_WEBHOOK
