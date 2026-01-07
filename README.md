@@ -4,9 +4,9 @@ This project is developed as part of the TY B.Sc. Computer Science curriculum 20
 
 ## Members info
 
-1] JayG003
-2] SomaG86
-3] Shreyaaaah!
+1. JayG003
+2. SomaG86
+3. Shreyaaaah!
 
 ## Project Overview
 
