@@ -16,7 +16,7 @@ The Intelligent Grievance Scrutiny and Decision Support System aims to improve t
 
 - Core Java
 - Java Swing/AWT
-- MySQL
+- PostgreSQL
 - JDBC
 
 ## User Roles
@@ -37,3 +37,4 @@ The Intelligent Grievance Scrutiny and Decision Support System aims to improve t
 ## Project Status
 
 In development
+Login page addes succesfully
