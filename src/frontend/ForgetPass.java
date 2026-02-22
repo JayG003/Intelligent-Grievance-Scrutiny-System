@@ -6,7 +6,6 @@ import java.awt.event.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.image.BufferedImage;
 import java.util.Random;
-import javax.swing.Timer;
 
 public class ForgetPass extends JFrame{
     
@@ -266,7 +265,7 @@ public class ForgetPass extends JFrame{
 
         CaptchaLable = new JLabel();
         
-        ImageIcon reloadIcon = new ImageIcon("/images/Reload.png");
+        ImageIcon reloadIcon = new ImageIcon(getClass().getResource("/images/Reload.png"));
         Image scaled = reloadIcon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
         refreshButton = new JButton(new ImageIcon(scaled));
         refreshButton.setBorderPainted(false);
