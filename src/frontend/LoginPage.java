@@ -1,12 +1,10 @@
 package frontend;
 
-import javax.swing.*;
+import database.JDBC;
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-// import Database.AuthService;
 
 public class LoginPage extends JFrame{
     public JPanel LPanel;
@@ -313,17 +311,25 @@ public class LoginPage extends JFrame{
                 String pass = new String(PassField.getPassword());
                 System.out.println("Username: " + UN + ", Password: " + pass);
 
-                // int check = AuthService.login(UN, pass);
-                boolean usernameCorrect = UN.equals("Admin");
-                boolean passwordCorrect = pass.equals("Pass123");
+                String check = JDBC.login(UN, pass);
+                // boolean check = UN.equals("Admin");
+                // boolean passwordCorrect = pass.equals("Pass123");
                 
-                if (usernameCorrect && passwordCorrect) {
+                if (check.equals("ADMIN")) {
                     JOptionPane.showMessageDialog(LoginPage.this, "Login Successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
-                } else if (!usernameCorrect && !passwordCorrect) {
-                    errorLabel.setText("Wrong Username and Password!");
-                } else if (!usernameCorrect) {
-                    errorLabel.setText("Wrong Username!");
-                } else if (!passwordCorrect) {
+                    errorLabel.setText("Admin Login");
+                }
+                else if (check.equals("user")) {
+                    JOptionPane.showMessageDialog(LoginPage.this, "Login Successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    errorLabel.setText("user Login");
+                }
+                else if (check.equals("manager")) {
+                    JOptionPane.showMessageDialog(LoginPage.this, "Login Successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    errorLabel.setText("Manager Login");
+                }
+                else if (check.equals("1")) {
+                    errorLabel.setText("User not found");
+                } else if (check.equals("2")) {
                     errorLabel.setText("Wrong Password!");
                 }
             }
