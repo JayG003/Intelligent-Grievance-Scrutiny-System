@@ -373,7 +373,7 @@ public class LoginPage extends JFrame{
             }
             @Override
             public void mouseClicked(MouseEvent e) {
-                new ResetPass();
+                new ForgetPass();
                 dispose();
             }
         });
