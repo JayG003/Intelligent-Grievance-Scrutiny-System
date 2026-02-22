@@ -328,7 +328,6 @@ public class LoginPage extends JFrame{
                 }
             }
         });
-
         clearButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 clearButton.setBackground(new Color(40, 40, 50));
@@ -355,12 +354,8 @@ public class LoginPage extends JFrame{
             }
             @Override
             public void mouseClicked(MouseEvent e) {
-                JOptionPane.showMessageDialog(
-                        LoginPage.this,
-                        "Register window in progress",
-                        "Action",
-                        JOptionPane.INFORMATION_MESSAGE
-                );
+                new Registration();
+                dispose();
             }
         });
         ForgetPass.addMouseListener(new MouseAdapter(){
