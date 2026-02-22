@@ -373,12 +373,8 @@ public class LoginPage extends JFrame{
             }
             @Override
             public void mouseClicked(MouseEvent e) {
-                JOptionPane.showMessageDialog(
-                        LoginPage.this,
-                        "Forget Password window in progress",
-                        "Action",
-                        JOptionPane.INFORMATION_MESSAGE
-                );
+                new ResetPass();
+                dispose();
             }
         });
         
