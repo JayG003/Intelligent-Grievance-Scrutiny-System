@@ -1,11 +1,10 @@
 package frontend;
 
-import javax.swing.*;
+import database.JDBC;
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 
 public class Registration extends JFrame{
     
@@ -599,8 +598,25 @@ public class Registration extends JFrame{
                     errorLabel.setText("Mobile number must be 10 digits");
                     return;
                 }
-                errorLabel.setForeground(Color.GREEN);
-                errorLabel.setText("Registration validated successfully ✅");
+                String check = JDBC.registerUser(Nm,Un, pass, mail, mob);
+
+                if(check.equals("1")){
+                    errorLabel.setText("User already exist");
+                    return;
+                }
+                if(check.equals("2")){
+                    errorLabel.setText("Email already exist");
+                    return;
+                }
+                if(check.equals("3")){
+                    errorLabel.setText("Mobile no. already exist");
+                    return;
+                }
+                if(check.equals("0")){
+                    errorLabel.setForeground(Color.GREEN);
+                    errorLabel.setText("Registration validated successfully");
+                    return;
+                }
             }
         });
         Clear.addActionListener(new ActionListener(){
