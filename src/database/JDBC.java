@@ -93,4 +93,53 @@ public class JDBC {
         }
         return result;
     }
+    public static String forgotPassword(String username, String mobileno, String newPassword) {
+
+        try {
+            Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/grievance_db","postgres","PassSQL123");
+
+            String sql = "SELECT username, mobileno FROM users WHERE username=?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, username);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+
+                String dbusername = rs.getString("username");
+                String dbmobile = rs.getString("mobileno");
+
+                if (dbusername.equals(username)) {
+
+                    if (dbmobile.equals(mobileno)) {
+
+                        String updateSql = "UPDATE users SET password=? WHERE username=?";
+                        PreparedStatement psUpdate = con.prepareStatement(updateSql);
+
+                        psUpdate.setString(1, newPassword);
+                        psUpdate.setString(2, username);
+
+                        psUpdate.executeUpdate();
+
+                        con.close();
+                        return "1";
+
+                    } else {
+                        con.close();
+                        return "2";
+                    }
+
+                }
+
+            }else {
+                    con.close();
+                    return "0";
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error: " + e);
+        }
+        return "-1";
+        
+    }
 }

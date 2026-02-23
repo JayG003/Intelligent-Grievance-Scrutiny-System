@@ -598,6 +598,7 @@ public class Registration extends JFrame{
                     errorLabel.setText("Mobile number must be 10 digits");
                     return;
                 }
+                
                 String check = JDBC.registerUser(Nm,Un, pass, mail, mob);
 
                 if(check.equals("1")){

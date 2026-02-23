@@ -1,5 +1,6 @@
 package frontend;
 
+import database.JDBC;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -660,8 +661,19 @@ public class ForgetPass extends JFrame{
                     clearError(3000);
                     return;
                 }
-                errorLabel.setForeground(new Color(0, 200, 100));
-                errorLabel.setText("Password Reset Successfully");
+                String check = JDBC.forgotPassword(Un, mob, pass);
+                if(check.equals("1")){
+                    errorLabel.setForeground(new Color(0, 200, 100));
+                    errorLabel.setText("Password Reset Successfully");
+                }
+                if(check.equals("2")){
+                    errorLabel.setForeground(Color.RED);
+                    errorLabel.setText("Enter Valid Mob No.");
+                }
+                if(check.equals("0")){
+                    errorLabel.setForeground(Color.RED);
+                    errorLabel.setText("User Not Found");
+                }
                 clearError(3000);
             }
         });
