@@ -311,27 +311,33 @@ public class LoginPage extends JFrame{
                 String pass = new String(PassField.getPassword());
                 System.out.println("Username: " + UN + ", Password: " + pass);
 
-                String check = JDBC.login(UN, pass);
-                // boolean check = UN.equals("Admin");
-                // boolean passwordCorrect = pass.equals("Pass123");
-                
-                if (check.equals("ADMIN")) {
-                    JOptionPane.showMessageDialog(LoginPage.this, "Login Successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
-                    errorLabel.setText("Admin Login");
+                if (UN.equals("Enter Unsername") || pass.equals("Enter Password")) {
+                    errorLabel.setText("Please fill all the fields!");
                 }
-                else if (check.equals("user")) {
-                    JOptionPane.showMessageDialog(LoginPage.this, "Login Successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
-                    errorLabel.setText("user Login");
+                else {
+                    String check = JDBC.login(UN, pass);
+                    // boolean check = UN.equals("Admin");
+                    // boolean passwordCorrect = pass.equals("Pass123");
+
+                    if (check.equals("ADMIN")) {
+                        errorLabel.setForeground(Color.GREEN);
+                        errorLabel.setText("Admin Login");
+                        JOptionPane.showMessageDialog(LoginPage.this, "Login Successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    } else if (check.equals("user")) {
+                        errorLabel.setForeground(Color.GREEN);
+                        errorLabel.setText("user Login");
+                        JOptionPane.showMessageDialog(LoginPage.this, "Login Successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    } else if (check.equals("manager")) {
+                        errorLabel.setForeground(Color.GREEN);
+                        errorLabel.setText("Manager Login");
+                        JOptionPane.showMessageDialog(LoginPage.this, "Login Successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    } else if (check.equals("1")) {
+                        errorLabel.setText("User not found");
+                    } else if (check.equals("2")) {
+                        errorLabel.setText("Wrong Password!");
+                    }
                 }
-                else if (check.equals("manager")) {
-                    JOptionPane.showMessageDialog(LoginPage.this, "Login Successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
-                    errorLabel.setText("Manager Login");
-                }
-                else if (check.equals("1")) {
-                    errorLabel.setText("User not found");
-                } else if (check.equals("2")) {
-                    errorLabel.setText("Wrong Password!");
-                }
+                clearError(3000);
             }
         });
         clearButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -345,8 +351,8 @@ public class LoginPage extends JFrame{
         clearButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                UnField.setText("");
-                PassField.setText("");
+                UnField.setText("Enter Unsername");
+                PassField.setText("Enter Password");
                 errorLabel.setText("");
                 UnField.requestFocus();
             }
@@ -424,6 +430,17 @@ public class LoginPage extends JFrame{
                 }
             }
         });
+    }
+    private void clearError(int secs) {
+        Timer timer = new Timer(secs, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                errorLabel.setText("");
+                errorLabel.setForeground(new Color(255, 100, 100));
+            }
+        });
+        timer.setRepeats(false); // run only once
+        timer.start();
     }
 
     public static void main(String[] args) {

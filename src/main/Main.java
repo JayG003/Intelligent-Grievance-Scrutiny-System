@@ -1,3 +1,5 @@
+package main;
+
 import frontend.*;
 
 public class main {

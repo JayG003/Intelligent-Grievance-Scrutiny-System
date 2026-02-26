@@ -576,26 +576,32 @@ public class Registration extends JFrame{
 
                 if(Nm.isEmpty() || Nm.equals("Enter Your Full Name here")){
                     errorLabel.setText("Please enter your name");
+                    clearError(3000);
                     return;
                 }
                 if(Un.isEmpty() || Un.equals("Enter Username")){
                     errorLabel.setText("Please enter your username");
+                    clearError(3000);
                     return;
                 }
                 if(pass.isEmpty() || pass.equals("Enter the Password")){
                     errorLabel.setText("Please enter password");
+                    clearError(3000);
                     return;
                 }
                 if(!pass.equals(Cpass)){
                     errorLabel.setText("Passwords do not match");
+                    clearError(3000);
                     return;
                 }
                 if(mail.isEmpty() || mail.equals("Example : Admin123@gmail.com")){
                     errorLabel.setText("Please enter valid Email");
+                    clearError(3000);
                     return;
                 }
                 if(mob.length() != 10){
                     errorLabel.setText("Mobile number must be 10 digits");
+                    clearError(3000);
                     return;
                 }
                 
@@ -603,19 +609,23 @@ public class Registration extends JFrame{
 
                 if(check.equals("1")){
                     errorLabel.setText("User already exist");
+                    clearError(3000);
                     return;
                 }
                 if(check.equals("2")){
                     errorLabel.setText("Email already exist");
+                    clearError(3000);
                     return;
                 }
                 if(check.equals("3")){
                     errorLabel.setText("Mobile no. already exist");
+                    clearError(3000);
                     return;
                 }
                 if(check.equals("0")){
                     errorLabel.setForeground(Color.GREEN);
-                    errorLabel.setText("Registration validated successfully");
+                    errorLabel.setText("Registration successfully Go back to Login Page");
+                    clearError(3000);
                     return;
                 }
             }
@@ -668,6 +678,17 @@ public class Registration extends JFrame{
                 dispose();
             }
         });
+    }
+    private void clearError(int secs) {
+        Timer timer = new Timer(secs, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                errorLabel.setText("");
+                errorLabel.setForeground(Color.RED);
+            }
+        });
+        timer.setRepeats(false); // run only once
+        timer.start();
     }
 
     public static void main(String[] args) {
