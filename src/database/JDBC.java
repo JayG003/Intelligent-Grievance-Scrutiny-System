@@ -2,7 +2,7 @@ package database;
 import java.sql.*;
 
 public class JDBC {
-
+																
     public static String login(String username, String password) {
         String var1 = "1";
         String var2 = "2";
