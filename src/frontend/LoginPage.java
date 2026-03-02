@@ -9,9 +9,9 @@ import javax.swing.border.EmptyBorder;
 public class LoginPage extends JFrame{
     public JPanel LPanel;
     public JLabel title1;
-    public JLabel title2; 
-    public JLabel title3; 
-    public JLabel title4; 
+    public JLabel title2;
+    public JLabel title3;
+    public JLabel title4;
     public JPanel LP1;
     public JPanel LP2;
     public JPanel LP3;
@@ -39,6 +39,7 @@ public class LoginPage extends JFrame{
 
     private void InitializeFrame(){
         setTitle("Intelligent Grievance Scrutiny System");
+        setBackground(new Color(15,15,25));
         setSize(1000, 700);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -322,15 +323,15 @@ public class LoginPage extends JFrame{
                     if (check.equals("ADMIN")) {
                         errorLabel.setForeground(Color.GREEN);
                         errorLabel.setText("Admin Login");
-                        JOptionPane.showMessageDialog(LoginPage.this, "Login Successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(LoginPage.this, "Login Successful!But feature in progress", "Success", JOptionPane.INFORMATION_MESSAGE);
                     } else if (check.equals("user")) {
                         errorLabel.setForeground(Color.GREEN);
                         errorLabel.setText("user Login");
-                        JOptionPane.showMessageDialog(LoginPage.this, "Login Successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                        new UserDashboard();
                     } else if (check.equals("manager")) {
                         errorLabel.setForeground(Color.GREEN);
                         errorLabel.setText("Manager Login");
-                        JOptionPane.showMessageDialog(LoginPage.this, "Login Successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(LoginPage.this, "Login Successful!But feature in progress", "Success", JOptionPane.INFORMATION_MESSAGE);
                     } else if (check.equals("1")) {
                         errorLabel.setText("User not found");
                     } else if (check.equals("2")) {
