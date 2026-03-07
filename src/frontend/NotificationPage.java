@@ -7,8 +7,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
-public class UserDashboard extends JFrame{
-
+public class NotificationPage extends JFrame{
     public JPanel LPanel;
     public JPanel Profile;
     public JLabel nameLabel;
@@ -26,18 +25,20 @@ public class UserDashboard extends JFrame{
     public JLabel Rnamelabel;
     public JLabel Rrolelabel;
     public JLabel Rrole;
-    public JPanel counterRow;
-    public JPanel c1,c2,c3,c4;
-    public JLabel n1,n2,n3,n4;
-    public JLabel t1,t2,t3,t4;
-    public JLabel Tlabel;
+    public JLabel Instructions;
+    public JPanel FormP;
+    public JLabel Category;
+    public JComboBox<String> Categoryl;
+    public JButton filter;
     public JTable table;
     public JScrollPane scrollPane;
+    public JButton View;
+    public JButton Del;
     
     String user;
     String role;
 
-    UserDashboard(String usern, String userRole){
+    NotificationPage(String usern, String userRole){
         this.user = usern;
         this.role = userRole;
         initializeFrame();
@@ -61,6 +62,9 @@ public class UserDashboard extends JFrame{
     }
 
     void AddPanels(){
+        if(user.equals("user")){
+           role = "Grievancer";
+        }
         GridBagConstraints gbc = new GridBagConstraints();
 
         LPanel = new JPanel();
@@ -69,13 +73,13 @@ public class UserDashboard extends JFrame{
         LPanel.setLayout(new BorderLayout());
         LPanel.setPreferredSize(new Dimension(200, 850));
 
-        ImageIcon icon = new ImageIcon(getClass().getResource("/images/userprofile.png"));
+        ImageIcon icon = new ImageIcon(getClass().getResource("/images/bell.png"));
         JLabel imageLabel = new JLabel();
         Image img = icon.getImage().getScaledInstance(70, 70,Image.SCALE_SMOOTH);
         imageLabel.setIcon(new ImageIcon(img));
         imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        nameLabel = new JLabel(user);
+        nameLabel = new JLabel("Notifications");
         nameLabel.setForeground(Color.WHITE);
         nameLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
         nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -116,9 +120,13 @@ public class UserDashboard extends JFrame{
         dashBtn.setContentAreaFilled(false);
         dashBtn.setFont(new Font("Segoe UI", Font.PLAIN, 15));
         dashBtn.setForeground(Color.WHITE);
-        dashBtn.setOpaque(true);
-        dashBtn.setBackground(new Color(96,165,250));
-        dashBtn.setBorder(new EmptyBorder(8, 15, 8, 10));
+        dashBtn.setOpaque(false);
+        dashBtn.setBorder(
+            BorderFactory.createCompoundBorder(
+                new LineBorder(new Color(2, 6, 23), 2),
+                new EmptyBorder(8, 15, 8, 10)
+            )
+        );
         lgbc.fill = GridBagConstraints.HORIZONTAL;
         lgbc.insets = new Insets(10, 10, 2, 10);
         lgbc.anchor = GridBagConstraints.NORTHWEST;
@@ -130,8 +138,9 @@ public class UserDashboard extends JFrame{
         grievBtn.setHorizontalAlignment(SwingConstants.LEFT);
         grievBtn.setIconTextGap(15);
         grievBtn.setFocusPainted(false);
-        grievBtn.setBorderPainted(false);
+        grievBtn.setBorderPainted(true);
         grievBtn.setContentAreaFilled(false);
+        grievBtn.setOpaque(false);
         grievBtn.setBorder(
             BorderFactory.createCompoundBorder(
                 new LineBorder(new Color(2, 6, 23), 2),
@@ -150,16 +159,16 @@ public class UserDashboard extends JFrame{
         mygrievBtn = new JButton(" My Grievances", new ImageIcon(img3));
         mygrievBtn.setHorizontalAlignment(SwingConstants.LEFT);
         mygrievBtn.setIconTextGap(15);
-        mygrievBtn.setContentAreaFilled(false);
         mygrievBtn.setFocusPainted(false);
-        mygrievBtn.setBorderPainted(true);
+        mygrievBtn.setBorderPainted(false);
+        mygrievBtn.setContentAreaFilled(false);
+        mygrievBtn.setFont(new Font("Segoe UI", Font.PLAIN, 15));
         mygrievBtn.setBorder(
             BorderFactory.createCompoundBorder(
                 new LineBorder(new Color(2, 6, 23), 2),
                 new EmptyBorder(8, 15, 8, 10)
             )
         );
-        mygrievBtn.setFont(new Font("Segoe UI", Font.PLAIN, 15));
         mygrievBtn.setForeground(Color.WHITE);
 
         lgbc.gridy = 2;
@@ -175,12 +184,9 @@ public class UserDashboard extends JFrame{
         notifyBtn.setFocusPainted(false);
         notifyBtn.setBorderPainted(true);
         notifyBtn.setContentAreaFilled(false);
-        notifyBtn.setBorder(
-            BorderFactory.createCompoundBorder(
-                new LineBorder(new Color(2, 6, 23), 2),
-                new EmptyBorder(8, 15, 8, 10)
-            )
-        );
+        notifyBtn.setOpaque(true);
+        notifyBtn.setBackground(new Color(96,165,250));
+        notifyBtn.setBorder(new EmptyBorder(8, 15, 8, 10));
         notifyBtn.setFont(new Font("Segoe UI", Font.PLAIN, 15));
         notifyBtn.setForeground(Color.WHITE);
         lgbc.gridy = 3;
@@ -273,7 +279,7 @@ public class UserDashboard extends JFrame{
 
         GridBagConstraints labelgbc = new GridBagConstraints();
 
-        Rnamelabel = new JLabel("Welcome Back, " + user + "!");
+        Rnamelabel = new JLabel("All Grievances");
         Rnamelabel.setFont(new Font("Times New Roman",Font.PLAIN,35));
         Rnamelabel.setForeground(Color.WHITE);
 
@@ -281,123 +287,65 @@ public class UserDashboard extends JFrame{
         labelgbc.gridy = 0;
         labelgbc.weightx = 1;
         labelgbc.weighty = 0;
-        labelgbc.anchor = GridBagConstraints.NORTHWEST;
-        labelgbc.insets = new Insets(50,40,0,0);
+        labelgbc.anchor = GridBagConstraints.NORTH;
+        labelgbc.insets = new Insets(10,0,0,0);
 
         RlabelP.add(Rnamelabel,labelgbc);
 
-        Rrolelabel = new JLabel("Role : " + role);
+        Rrolelabel = new JLabel("You can see all the grivnces you have submitted");
         Rrolelabel.setFont(new Font("Segoe UI",Font.BOLD,16));
         Rrolelabel.setForeground(Color.LIGHT_GRAY);
 
         labelgbc.gridx = 0;
         labelgbc.gridy = 1;
         labelgbc.weightx = 0;
-        labelgbc.anchor = GridBagConstraints.NORTHWEST;
-        labelgbc.insets = new Insets(10,40,10,0);
+        labelgbc.anchor = GridBagConstraints.NORTH;
+        labelgbc.insets = new Insets(10,0,40,0);
         
         RlabelP.add(Rrolelabel,labelgbc);
 
-        // RPanel.add(RlabelP,BorderLayout.NORTH);
         rgbc.gridy = 0;
         rgbc.weightx = 1;
         rgbc.weighty = 0;
         RPanel.add(RlabelP, rgbc);
 
-        counterRow = new JPanel(new GridLayout(1,4,20,0));
-        counterRow.setBorder(new EmptyBorder(20,40,20,40));
-        counterRow.setOpaque(false);
-        
-        c1 = new JPanel();
-        c1.setLayout(new BoxLayout(c1, BoxLayout.Y_AXIS));
-        c1.setBackground(new Color(31,41,55));
-        c1.setBorder(new EmptyBorder(20,20,20,20));
-        n1 = new JLabel("12");
-        n1.setFont(new Font("Segoe UI", Font.BOLD, 28));
-        n1.setForeground(new Color(59, 130, 246));
-        n1.setAlignmentX(Component.CENTER_ALIGNMENT);
-        t1 = new JLabel("Total Grievances");
-        t1.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        t1.setForeground(new Color(59, 130, 246));
-        t1.setAlignmentX(Component.CENTER_ALIGNMENT);
-        c1.add(n1);
-        c1.add(Box.createVerticalStrut(8));
-        c1.add(t1);
-        
-        c2 = new JPanel();
-        c2.setLayout(new BoxLayout(c2, BoxLayout.Y_AXIS));
-        // c2.setBackground(new Color(35,35,50));
-        c2.setBackground(new Color(31,41,55));
-        c2.setBorder(new EmptyBorder(20,20,20,20));
-        n2 = new JLabel("3");
-        n2.setFont(new Font("Segoe UI", Font.BOLD, 28));
-        // n2.setForeground(Color.WHITE);
-        n2.setForeground(new Color(139, 92, 246));
-        n2.setAlignmentX(Component.CENTER_ALIGNMENT);
-        t2 = new JLabel("Under Scrunity");
-        // t2.setForeground(Color.LIGHT_GRAY);
-        t2.setForeground(new Color(139, 92, 246));
-        t2.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        t2.setAlignmentX(Component.CENTER_ALIGNMENT);
-        c2.add(n2);
-        c2.add(Box.createVerticalStrut(8));
-        c2.add(t2);
-        
-        c3 = new JPanel();
-        c3.setLayout(new BoxLayout(c3, BoxLayout.Y_AXIS));
-        // c3.setBackground(new Color(35,35,50));
-        c3.setBackground(new Color(31,41,55));
-        c3.setBorder(new EmptyBorder(20,20,20,20));
-        n3 = new JLabel("7");
-        n3.setFont(new Font("Segoe UI", Font.BOLD, 28));
-        // n3.setForeground(Color.WHITE);
-        n3.setForeground(new Color(34, 197, 94));
-        n3.setAlignmentX(Component.CENTER_ALIGNMENT);
-        t3 = new JLabel("Resolved");
-        // t3.setForeground(Color.LIGHT_GRAY);
-        t3.setForeground(new Color(34, 197, 94));
-        t3.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        t3.setAlignmentX(Component.CENTER_ALIGNMENT);
-        c3.add(n3);
-        c3.add(Box.createVerticalStrut(8));
-        c3.add(t3);
-        
-        c4 = new JPanel();
-        c4.setLayout(new BoxLayout(c4, BoxLayout.Y_AXIS));
-        // c4.setBackground(new Color(35,35,50));
-        c4.setBackground(new Color(31,41,55));
-        c4.setBorder(new EmptyBorder(20,20,20,20));
-        n4 = new JLabel("2");
-        n4.setFont(new Font("Segoe UI", Font.BOLD, 28));
-        // n4.setForeground(Color.WHITE);
-        n4.setForeground(new Color(245, 158, 11));
-        n4.setAlignmentX(Component.CENTER_ALIGNMENT);
-        t4 = new JLabel("Unattended");
-        // t4.setForeground(Color.LIGHT_GRAY);
-        t4.setForeground(new Color(245, 158, 11));
-        t4.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        t4.setAlignmentX(Component.CENTER_ALIGNMENT);
-        c4.add(n4);
-        c4.add(Box.createVerticalStrut(8));
-        c4.add(t4);
-
-        counterRow.add(c1);
-        counterRow.add(c2);
-        counterRow.add(c3);
-        counterRow.add(c4);
-
+        Instructions = new JLabel(
+            "<html><div style='text-align:left;'>"
+            + "<b>Notification Center Guidelines</b><br><br>"
+            + "• View updates related to your submitted grievances<br>"
+            + "• Track status changes such as <b>Under Scrutiny</b>, <b>Resolved</b>, or <b>Pending Review</b><br>"
+            + "• Click <b>View</b> to see complete grievance details<br>"
+            + "• Unread notifications will appear highlighted for quick attention<br>"
+            + "• Use filters to find specific notifications easily<br>"
+            + "• Notifications help you stay informed about grievance progress<br>"
+            + "• Regularly check this section for important updates from authorities<br>"
+            + "</div></html>",
+            SwingConstants.LEFT
+        );
         rgbc.gridy = 1;
-        rgbc.insets = new Insets(10,0,10,0);
-        RPanel.add(counterRow, rgbc);
+        rgbc.insets = new Insets(10,40,20,0);
+        Instructions.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        Instructions.setForeground(new Color(225, 225,225));
+        RPanel.add(Instructions,rgbc);
 
-        Tlabel = new JLabel("Recent Grievances");
-        Tlabel.setFont(new Font("Segoe UI",Font.BOLD,20));
-        Tlabel.setForeground(new Color(0, 102, 204));
-        // Tlabel.setBorder(new EmptyBorder(10,20,5,0));
+        FormP = new GlassPanel(30);
+        ((GlassPanel) FormP).setRoundRight(false);
+        ((GlassPanel) FormP).setGlassBackground(new Color(128, 159, 255, 20));
+        ((GlassPanel) FormP).setGlassBorder(new Color(255, 255, 255, 60));
+        FormP.setPreferredSize(new Dimension(800, 450));
+        FormP.setLayout(new GridBagLayout());
+        GridBagConstraints fgbc = new GridBagConstraints();
+        fgbc.fill = GridBagConstraints.BOTH;
+        fgbc.anchor = GridBagConstraints.NORTHWEST;
 
+        rgbc.gridx = 0;
         rgbc.gridy = 2;
-        rgbc.insets = new Insets(10,40,10,0);
-        RPanel.add(Tlabel, rgbc);
+        rgbc.weightx = 1;
+        rgbc.weighty = 1;
+        rgbc.fill = GridBagConstraints.BOTH;
+        rgbc.insets = new Insets(10,40,20,40);
+
+        RPanel.add(FormP, rgbc);
 
         String[] columns = {"Member ID", "Member Name", "Mobile", "Adress"};
         String[][] data = {
@@ -426,7 +374,7 @@ public class UserDashboard extends JFrame{
         table.getTableHeader().setForeground(new Color(248, 250, 252));
         table.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
 
-        table.setRowHeight(35);
+        table.setRowHeight(30);
         table.setBackground(new Color(17, 24, 39));
         table.setForeground(new Color(229, 231, 235));
         table.setFont(new Font("Segoe UI", Font.BOLD, 14));
@@ -439,22 +387,75 @@ public class UserDashboard extends JFrame{
         scrollPane.setBorder(BorderFactory.createLineBorder(new Color(55,65,81)));
         scrollPane.setBorder(null);
 
-        rgbc.gridy = 3;
-        rgbc.weightx = 1;
-        rgbc.weighty = 1;
-        rgbc.fill = GridBagConstraints.BOTH;
-        rgbc.insets = new Insets(0,40,40,40);
-        RPanel.add(scrollPane,rgbc);
+        fgbc.gridy = 0;
+        fgbc.gridx = 0;
+        fgbc.weightx = 1;
+        fgbc.weighty = 1;
+        fgbc.fill = GridBagConstraints.BOTH;
+        fgbc.anchor = GridBagConstraints.WEST;
+        fgbc.insets = new Insets(40,20,10,20);
+        FormP.add(scrollPane,fgbc);
+
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT,15,0));
+        buttonPanel.setOpaque(false);
+
+        GridBagConstraints bgbc = new GridBagConstraints();
+        bgbc.weightx = 0;
+        bgbc.fill = GridBagConstraints.NONE;
+        bgbc.anchor = GridBagConstraints.WEST;
+
+        View = new JButton("View");
+        View.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        View.setBackground(new Color(96,165,250));
+        View.setForeground(Color.WHITE);
+        View.setFocusPainted(false);
+        View.setBorder(BorderFactory.createEmptyBorder(5, 25, 5, 25));
+        View.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        
+        Del = new JButton("Delete");
+        Del.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        Del.setBackground(new Color(180, 0, 0));
+        Del.setForeground(Color.WHITE);
+        Del.setFocusPainted(false);
+        Del.setBorder(BorderFactory.createEmptyBorder(5, 25, 5, 25));
+        Del.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        
+        buttonPanel.add(View);
+        buttonPanel.add(Del);
+
+        fgbc.gridy = 1;
+        fgbc.gridx = 0;
+        fgbc.gridwidth = 2;
+        fgbc.weightx = 0;
+        fgbc.weighty = 0;
+        fgbc.fill = GridBagConstraints.NONE;
+        fgbc.anchor = GridBagConstraints.WEST;
+        fgbc.insets = new Insets(10, 20, 20, 20);
+
+        FormP.add(buttonPanel, fgbc);
 
         add(RPanel, gbc);
 
         // ============== Mouse Liatners ==============//
         dashBtn.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent e) {
-                dashBtn.setBackground(new Color(110,190,250));
+                dashBtn.setBorderPainted(true);
+                dashBtn.setBorder(
+                    BorderFactory.createCompoundBorder(
+                        new LineBorder(new Color(60,120,200), 2),
+                        new EmptyBorder(8, 15, 8, 10)
+                    )
+                );
             }
             public void mouseExited(MouseEvent e) {
-                dashBtn.setBackground(new Color(96,165,250));
+                dashBtn.setBorderPainted(true);
+                dashBtn.setBorder(
+                    BorderFactory.createCompoundBorder(
+                        new LineBorder(new Color(2, 6, 23), 2),
+                        new EmptyBorder(8, 15, 8, 10)
+                    )
+                );
             }
         });
 
@@ -478,7 +479,6 @@ public class UserDashboard extends JFrame{
                 );
             }
         });
-
         mygrievBtn.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent e) {
                 mygrievBtn.setBorderPainted(true);
@@ -499,28 +499,14 @@ public class UserDashboard extends JFrame{
                 );
             }
         });
-
         notifyBtn.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent e) {
-                notifyBtn.setBorderPainted(true);
-                notifyBtn.setBorder(
-                    BorderFactory.createCompoundBorder(
-                        new LineBorder(new Color(60,120,200), 2),
-                        new EmptyBorder(8, 15, 8, 10)
-                    )
-                );
+                notifyBtn.setBackground(new Color(110,190,250));
             }
             public void mouseExited(MouseEvent e) {
-                notifyBtn.setBorderPainted(true);
-                notifyBtn.setBorder(
-                    BorderFactory.createCompoundBorder(
-                        new LineBorder(new Color(2, 6, 23), 2),
-                        new EmptyBorder(8, 15, 8, 10)
-                    )
-                );
+                notifyBtn.setBackground(new Color(96,165,250));
             }
         });
-
         profileBtn.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent e) {
                 profileBtn.setBorderPainted(true);
@@ -541,7 +527,6 @@ public class UserDashboard extends JFrame{
                 );
             }
         });
-
         logoutBtn.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent e) {
                 logoutBtn.setBorderPainted(true);
@@ -562,9 +547,16 @@ public class UserDashboard extends JFrame{
                 );
             }
         });
-        
+
         //================ACTION LISTNERS=================//
 
+        dashBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new UserDashboard(user, role);
+                dispose();
+            }
+        });
         grievBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -576,13 +568,6 @@ public class UserDashboard extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 new MyGrievancePage(user, role);
-                dispose();
-            }
-        });
-        notifyBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new NotificationPage(user, role);
                 dispose();
             }
         });
@@ -606,7 +591,6 @@ public class UserDashboard extends JFrame{
         });
     }
     public static void main(String[] args) {
-        String usern = "user";
-        new UserDashboard(usern, "Grievancer");
+        new NotificationPage("user", "Grievancer");
     }
 }

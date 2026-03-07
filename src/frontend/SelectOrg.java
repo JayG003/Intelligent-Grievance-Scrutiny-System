@@ -5,10 +5,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.table.DefaultTableModel;
 
-public class UserDashboard extends JFrame{
-
+public class SelectOrg extends JFrame{
     public JPanel LPanel;
     public JPanel Profile;
     public JLabel nameLabel;
@@ -26,6 +24,8 @@ public class UserDashboard extends JFrame{
     public JLabel Rnamelabel;
     public JLabel Rrolelabel;
     public JLabel Rrole;
+    public JButton droplist;
+    public JLabel OR;
     public JPanel counterRow;
     public JPanel c1,c2,c3,c4;
     public JLabel n1,n2,n3,n4;
@@ -36,8 +36,9 @@ public class UserDashboard extends JFrame{
     
     String user;
     String role;
+    String selected;
 
-    UserDashboard(String usern, String userRole){
+    SelectOrg(String usern, String userRole){
         this.user = usern;
         this.role = userRole;
         initializeFrame();
@@ -61,6 +62,11 @@ public class UserDashboard extends JFrame{
     }
 
     void AddPanels(){
+
+        if(user.equals("user")){
+           role = "Grievancer";
+        }
+
         GridBagConstraints gbc = new GridBagConstraints();
 
         LPanel = new JPanel();
@@ -69,13 +75,13 @@ public class UserDashboard extends JFrame{
         LPanel.setLayout(new BorderLayout());
         LPanel.setPreferredSize(new Dimension(200, 850));
 
-        ImageIcon icon = new ImageIcon(getClass().getResource("/images/userprofile.png"));
+        ImageIcon icon = new ImageIcon(getClass().getResource("/images/form.png"));
         JLabel imageLabel = new JLabel();
         Image img = icon.getImage().getScaledInstance(70, 70,Image.SCALE_SMOOTH);
         imageLabel.setIcon(new ImageIcon(img));
         imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        nameLabel = new JLabel(user);
+        nameLabel = new JLabel("New Grievance");
         nameLabel.setForeground(Color.WHITE);
         nameLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
         nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -116,9 +122,13 @@ public class UserDashboard extends JFrame{
         dashBtn.setContentAreaFilled(false);
         dashBtn.setFont(new Font("Segoe UI", Font.PLAIN, 15));
         dashBtn.setForeground(Color.WHITE);
-        dashBtn.setOpaque(true);
-        dashBtn.setBackground(new Color(96,165,250));
-        dashBtn.setBorder(new EmptyBorder(8, 15, 8, 10));
+        dashBtn.setOpaque(false);
+        dashBtn.setBorder(
+            BorderFactory.createCompoundBorder(
+                new LineBorder(new Color(2, 6, 23), 2),
+                new EmptyBorder(8, 15, 8, 10)
+            )
+        );
         lgbc.fill = GridBagConstraints.HORIZONTAL;
         lgbc.insets = new Insets(10, 10, 2, 10);
         lgbc.anchor = GridBagConstraints.NORTHWEST;
@@ -132,12 +142,8 @@ public class UserDashboard extends JFrame{
         grievBtn.setFocusPainted(false);
         grievBtn.setBorderPainted(false);
         grievBtn.setContentAreaFilled(false);
-        grievBtn.setBorder(
-            BorderFactory.createCompoundBorder(
-                new LineBorder(new Color(2, 6, 23), 2),
-                new EmptyBorder(8, 15, 8, 10)
-            )
-        );
+        grievBtn.setOpaque(true);
+        grievBtn.setBackground(new Color(96,165,250));
         grievBtn.setFont(new Font("Segoe UI", Font.PLAIN, 15));
         grievBtn.setForeground(Color.WHITE);
         lgbc.gridy = 1;
@@ -273,7 +279,7 @@ public class UserDashboard extends JFrame{
 
         GridBagConstraints labelgbc = new GridBagConstraints();
 
-        Rnamelabel = new JLabel("Welcome Back, " + user + "!");
+        Rnamelabel = new JLabel("Submite New Grievance");
         Rnamelabel.setFont(new Font("Times New Roman",Font.PLAIN,35));
         Rnamelabel.setForeground(Color.WHITE);
 
@@ -282,11 +288,11 @@ public class UserDashboard extends JFrame{
         labelgbc.weightx = 1;
         labelgbc.weighty = 0;
         labelgbc.anchor = GridBagConstraints.NORTHWEST;
-        labelgbc.insets = new Insets(50,40,0,0);
+        labelgbc.insets = new Insets(50,400,0,0);
 
         RlabelP.add(Rnamelabel,labelgbc);
 
-        Rrolelabel = new JLabel("Role : " + role);
+        Rrolelabel = new JLabel("Please select the department related to your grievance.");
         Rrolelabel.setFont(new Font("Segoe UI",Font.BOLD,16));
         Rrolelabel.setForeground(Color.LIGHT_GRAY);
 
@@ -294,30 +300,66 @@ public class UserDashboard extends JFrame{
         labelgbc.gridy = 1;
         labelgbc.weightx = 0;
         labelgbc.anchor = GridBagConstraints.NORTHWEST;
-        labelgbc.insets = new Insets(10,40,10,0);
+        labelgbc.insets = new Insets(10,370,60,0);
         
         RlabelP.add(Rrolelabel,labelgbc);
 
-        // RPanel.add(RlabelP,BorderLayout.NORTH);
         rgbc.gridy = 0;
         rgbc.weightx = 1;
         rgbc.weighty = 0;
         RPanel.add(RlabelP, rgbc);
 
-        counterRow = new JPanel(new GridLayout(1,4,20,0));
-        counterRow.setBorder(new EmptyBorder(20,40,20,40));
+        String[] departments = {
+                "Select Department",
+                "Educational",
+                "Health-care",
+                "Municipal",
+                "Well-Fare"
+        };
+
+        JComboBox<String> comboBox = new JComboBox<>(departments);
+        comboBox.setPreferredSize(new Dimension(250, 40));
+
+        rgbc.gridy = 1;
+        rgbc.gridx = 0;
+        rgbc.insets = new Insets(10,250,10,250);
+        RPanel.add(comboBox, rgbc);
+
+        droplist = new JButton("Submit");
+        droplist.setPreferredSize(new Dimension(0, 40));
+        droplist.setOpaque(true);
+        droplist.setBorderPainted(false);
+        droplist.setFocusPainted(false);
+        droplist.setForeground(Color.WHITE);
+        droplist.setBackground(new Color(96,165,250));
+
+        rgbc.gridy = 2;
+        rgbc.gridx = 0;
+        rgbc.insets = new Insets(10,400,10,400);
+        RPanel.add(droplist, rgbc);
+
+        OR = new JLabel("OR");
+        OR.setFont(new Font("Times new Roman",Font.BOLD,20));
+        OR.setForeground(Color.WHITE);
+        rgbc.gridy = 3;
+        rgbc.gridx = 0;
+        rgbc.insets = new Insets(30,580,20,300);
+        RPanel.add(OR, rgbc);
+
+        counterRow = new JPanel(new GridLayout(2,2,20,20));
+        counterRow.setBorder(new EmptyBorder(20,250,20,250));
         counterRow.setOpaque(false);
         
         c1 = new JPanel();
         c1.setLayout(new BoxLayout(c1, BoxLayout.Y_AXIS));
         c1.setBackground(new Color(31,41,55));
         c1.setBorder(new EmptyBorder(20,20,20,20));
-        n1 = new JLabel("12");
-        n1.setFont(new Font("Segoe UI", Font.BOLD, 28));
-        n1.setForeground(new Color(59, 130, 246));
+        ImageIcon i1 = new ImageIcon(getClass().getResource("/images/c1.png"));
+        Image g1 = i1.getImage().getScaledInstance(100, 70, Image.SCALE_SMOOTH);
+        n1 = new JLabel(new ImageIcon(g1));
         n1.setAlignmentX(Component.CENTER_ALIGNMENT);
-        t1 = new JLabel("Total Grievances");
-        t1.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        t1 = new JLabel("Education");
+        t1.setFont(new Font("Segoe UI", Font.BOLD, 18));
         t1.setForeground(new Color(59, 130, 246));
         t1.setAlignmentX(Component.CENTER_ALIGNMENT);
         c1.add(n1);
@@ -326,16 +368,13 @@ public class UserDashboard extends JFrame{
         
         c2 = new JPanel();
         c2.setLayout(new BoxLayout(c2, BoxLayout.Y_AXIS));
-        // c2.setBackground(new Color(35,35,50));
         c2.setBackground(new Color(31,41,55));
         c2.setBorder(new EmptyBorder(20,20,20,20));
-        n2 = new JLabel("3");
-        n2.setFont(new Font("Segoe UI", Font.BOLD, 28));
-        // n2.setForeground(Color.WHITE);
-        n2.setForeground(new Color(139, 92, 246));
+        ImageIcon i2 = new ImageIcon(getClass().getResource("/images/c2.png"));
+        Image g2 = i2.getImage().getScaledInstance(80, 70, Image.SCALE_SMOOTH);
+        n2 = new JLabel(new ImageIcon(g2));
         n2.setAlignmentX(Component.CENTER_ALIGNMENT);
-        t2 = new JLabel("Under Scrunity");
-        // t2.setForeground(Color.LIGHT_GRAY);
+        t2 = new JLabel("Health-care");
         t2.setForeground(new Color(139, 92, 246));
         t2.setFont(new Font("Segoe UI", Font.BOLD, 14));
         t2.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -345,16 +384,13 @@ public class UserDashboard extends JFrame{
         
         c3 = new JPanel();
         c3.setLayout(new BoxLayout(c3, BoxLayout.Y_AXIS));
-        // c3.setBackground(new Color(35,35,50));
         c3.setBackground(new Color(31,41,55));
         c3.setBorder(new EmptyBorder(20,20,20,20));
-        n3 = new JLabel("7");
-        n3.setFont(new Font("Segoe UI", Font.BOLD, 28));
-        // n3.setForeground(Color.WHITE);
-        n3.setForeground(new Color(34, 197, 94));
+        ImageIcon i3 = new ImageIcon(getClass().getResource("/images/c3.png"));
+        Image g3 = i3.getImage().getScaledInstance(80, 70, Image.SCALE_SMOOTH);
+        n3 = new JLabel(new ImageIcon(g3));
         n3.setAlignmentX(Component.CENTER_ALIGNMENT);
-        t3 = new JLabel("Resolved");
-        // t3.setForeground(Color.LIGHT_GRAY);
+        t3 = new JLabel("Municipal");
         t3.setForeground(new Color(34, 197, 94));
         t3.setFont(new Font("Segoe UI", Font.BOLD, 14));
         t3.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -364,16 +400,13 @@ public class UserDashboard extends JFrame{
         
         c4 = new JPanel();
         c4.setLayout(new BoxLayout(c4, BoxLayout.Y_AXIS));
-        // c4.setBackground(new Color(35,35,50));
         c4.setBackground(new Color(31,41,55));
         c4.setBorder(new EmptyBorder(20,20,20,20));
-        n4 = new JLabel("2");
-        n4.setFont(new Font("Segoe UI", Font.BOLD, 28));
-        // n4.setForeground(Color.WHITE);
-        n4.setForeground(new Color(245, 158, 11));
+        ImageIcon i4 = new ImageIcon(getClass().getResource("/images/c4.png"));
+        Image g4 = i4.getImage().getScaledInstance(80, 70, Image.SCALE_SMOOTH);
+        n4 = new JLabel(new ImageIcon(g4));
         n4.setAlignmentX(Component.CENTER_ALIGNMENT);
-        t4 = new JLabel("Unattended");
-        // t4.setForeground(Color.LIGHT_GRAY);
+        t4 = new JLabel("Well-Fare");
         t4.setForeground(new Color(245, 158, 11));
         t4.setFont(new Font("Segoe UI", Font.BOLD, 14));
         t4.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -386,82 +419,17 @@ public class UserDashboard extends JFrame{
         counterRow.add(c3);
         counterRow.add(c4);
 
-        rgbc.gridy = 1;
+        rgbc.gridy = 4;
         rgbc.insets = new Insets(10,0,10,0);
         RPanel.add(counterRow, rgbc);
-
-        Tlabel = new JLabel("Recent Grievances");
-        Tlabel.setFont(new Font("Segoe UI",Font.BOLD,20));
-        Tlabel.setForeground(new Color(0, 102, 204));
-        // Tlabel.setBorder(new EmptyBorder(10,20,5,0));
-
-        rgbc.gridy = 2;
-        rgbc.insets = new Insets(10,40,10,0);
-        RPanel.add(Tlabel, rgbc);
-
-        String[] columns = {"Member ID", "Member Name", "Mobile", "Adress"};
-        String[][] data = {
-            {"M001", "John Doe", "B102", "Introduction to Java"},
-            {"M002", "Jane Smith", "B107", "Database Systems"},
-            {"M003", "Robert Brown", "B123", "Algorithms Design"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
-        };
-
-        table = new JTable(new DefaultTableModel(data, columns));
-        table.getTableHeader().setPreferredSize(new Dimension(0,40));
-        table.getTableHeader().setBackground(new Color(30, 41, 59));
-        table.getTableHeader().setForeground(new Color(248, 250, 252));
-        table.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
-
-        table.setRowHeight(35);
-        table.setBackground(new Color(17, 24, 39));
-        table.setForeground(new Color(229, 231, 235));
-        table.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        table.setGridColor(new Color(55, 65, 81, 180));
-        table.setSelectionBackground(new Color(59,130,246));
-        table.setSelectionForeground(Color.WHITE);
-
-        scrollPane = new JScrollPane(table);
-        scrollPane.getViewport().setBackground(new Color(17,24,39));
-        scrollPane.setBorder(BorderFactory.createLineBorder(new Color(55,65,81)));
-        scrollPane.setBorder(null);
-
-        rgbc.gridy = 3;
-        rgbc.weightx = 1;
-        rgbc.weighty = 1;
-        rgbc.fill = GridBagConstraints.BOTH;
-        rgbc.insets = new Insets(0,40,40,40);
-        RPanel.add(scrollPane,rgbc);
 
         add(RPanel, gbc);
 
         // ============== Mouse Liatners ==============//
         dashBtn.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent e) {
-                dashBtn.setBackground(new Color(110,190,250));
-            }
-            public void mouseExited(MouseEvent e) {
-                dashBtn.setBackground(new Color(96,165,250));
-            }
-        });
-
-        grievBtn.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent e) {
-                grievBtn.setBorderPainted(true);
-                grievBtn.setBorder(
+                dashBtn.setBorderPainted(true);
+                dashBtn.setBorder(
                     BorderFactory.createCompoundBorder(
                         new LineBorder(new Color(60,120,200), 2),
                         new EmptyBorder(8, 15, 8, 10)
@@ -469,8 +437,8 @@ public class UserDashboard extends JFrame{
                 );
             }
             public void mouseExited(MouseEvent e) {
-                grievBtn.setBorderPainted(true);
-                grievBtn.setBorder(
+                dashBtn.setBorderPainted(true);
+                dashBtn.setBorder(
                     BorderFactory.createCompoundBorder(
                         new LineBorder(new Color(2, 6, 23), 2),
                         new EmptyBorder(8, 15, 8, 10)
@@ -479,6 +447,14 @@ public class UserDashboard extends JFrame{
             }
         });
 
+        grievBtn.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) {
+                grievBtn.setBackground(new Color(110,190,250));
+            }
+            public void mouseExited(MouseEvent e) {
+                grievBtn.setBackground(new Color(96,165,250));
+            }
+        });
         mygrievBtn.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent e) {
                 mygrievBtn.setBorderPainted(true);
@@ -499,7 +475,6 @@ public class UserDashboard extends JFrame{
                 );
             }
         });
-
         notifyBtn.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent e) {
                 notifyBtn.setBorderPainted(true);
@@ -520,7 +495,6 @@ public class UserDashboard extends JFrame{
                 );
             }
         });
-
         profileBtn.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent e) {
                 profileBtn.setBorderPainted(true);
@@ -541,7 +515,6 @@ public class UserDashboard extends JFrame{
                 );
             }
         });
-
         logoutBtn.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent e) {
                 logoutBtn.setBorderPainted(true);
@@ -562,13 +535,65 @@ public class UserDashboard extends JFrame{
                 );
             }
         });
-        
+        c1.addMouseListener(new MouseAdapter(){
+            public void mouseEntered(MouseEvent e){
+                c1.setBackground(new Color(2, 6, 23));
+            }
+            public void mouseExited(MouseEvent e){
+                c1.setBackground(new Color(31,41,55));
+            }
+            public void mouseClicked(MouseEvent e){
+                selected = "Educational";
+                new FormPage(selected, user, role);
+                dispose();
+            }
+        });
+        c2.addMouseListener(new MouseAdapter(){
+            public void mouseEntered(MouseEvent e){
+                c2.setBackground(new Color(2, 6, 23));
+            }
+            public void mouseExited(MouseEvent e){
+                c2.setBackground(new Color(31,41,55));
+            }
+            public void mouseClicked(MouseEvent e){
+                selected = "Health-care";
+                new FormPage(selected, user, role);
+                dispose();
+            }
+        });
+        c3.addMouseListener(new MouseAdapter(){
+            public void mouseEntered(MouseEvent e){
+                c3.setBackground(new Color(2, 6, 23));
+            }
+            public void mouseExited(MouseEvent e){
+                c3.setBackground(new Color(31,41,55));
+            }
+            public void mouseClicked(MouseEvent e){
+                selected = "Municipal";
+                new FormPage(selected, user, role);
+                dispose();
+            }
+        });
+        c4.addMouseListener(new MouseAdapter(){
+            public void mouseEntered(MouseEvent e){
+                c4.setBackground(new Color(2, 6, 23));
+            }
+            public void mouseExited(MouseEvent e){
+                c4.setBackground(new Color(31,41,55));
+            }
+            public void mouseClicked(MouseEvent e){
+                selected = "Well-Fare";
+                new FormPage(selected, user, role);
+                dispose();
+            }
+        });
+
         //================ACTION LISTNERS=================//
 
-        grievBtn.addActionListener(new ActionListener() {
+        dashBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new SelectOrg(user, role);
+                new UserDashboard(user, role);
                 dispose();
             }
         });
@@ -604,9 +629,13 @@ public class UserDashboard extends JFrame{
                 dispose();
             }
         });
+        droplist.addActionListener(e -> {
+            selected = (String) comboBox.getSelectedItem();
+            new FormPage(selected, user, role);
+            dispose();
+        });
     }
     public static void main(String[] args) {
-        String usern = "user";
-        new UserDashboard(usern, "Grievancer");
+        new SelectOrg("User", "Grievancer");
     }
 }

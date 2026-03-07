@@ -327,7 +327,8 @@ public class LoginPage extends JFrame{
                     } else if (check.equals("user")) {
                         errorLabel.setForeground(Color.GREEN);
                         errorLabel.setText("user Login");
-                        new UserDashboard();
+                        new UserDashboard(UN, "Grievancer");
+                        dispose();
                     } else if (check.equals("manager")) {
                         errorLabel.setForeground(Color.GREEN);
                         errorLabel.setText("Manager Login");
