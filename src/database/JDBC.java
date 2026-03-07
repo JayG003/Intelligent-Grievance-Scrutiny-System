@@ -141,6 +141,58 @@ public class JDBC {
             System.out.println("Error: " + e);
         }
         return "-1";
-        
+    }
+
+    public static String addGrievance(String username, String organisation, String subject,String applicantname, String applicantmobile, String applicantemail,String description, String info1, String info2, String info3, String info4)
+    {
+        String result = "0";
+        try {
+
+            Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/grievance_db","postgres","PassSQL123");
+
+            String q1 = "SELECT userid FROM users WHERE username = ?";
+            PreparedStatement ps1 = con.prepareStatement(q1);
+            ps1.setString(1, username);
+
+            ResultSet rs = ps1.executeQuery();
+
+            int userId = 0;
+
+            if (rs.next()) {
+                userId = rs.getInt("userid");
+            }
+
+            String q2 = "INSERT INTO grievances "
+                    + "(userid, organisation, subject, applicantname, applicantmobile, applicantemail, description, info1, info2, info3, info4, status, priority) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Open', 'Low')";
+
+            PreparedStatement ps2 = con.prepareStatement(q2);
+
+            ps2.setInt(1, userId);
+            ps2.setString(2, organisation);
+            ps2.setString(3, subject);
+            ps2.setString(4, applicantname);
+            ps2.setString(5, applicantmobile);
+            ps2.setString(6, applicantemail);
+            ps2.setString(7, description);
+            ps2.setString(8, info1);
+            ps2.setString(9, info2);
+            ps2.setString(10, info3);
+            ps2.setString(11, info4);
+
+            int rows = ps2.executeUpdate();
+
+            if (rows > 0) {
+                result = "1";
+            }
+
+            con.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = "0";
+        }
+
+        return result;
     }
 }

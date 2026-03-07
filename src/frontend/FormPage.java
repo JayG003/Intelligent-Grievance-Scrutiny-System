@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import database.JDBC;
 
 public class FormPage extends JFrame{
     public JPanel LPanel;
@@ -71,6 +72,11 @@ public class FormPage extends JFrame{
         setSize(1400, 850);
         setLocationRelativeTo(null);
         setResizable(true);
+
+        ImageIcon icon = new ImageIcon(getClass().getResource("/images/logo.png"));
+        if (icon.getIconWidth() > 0) {
+            setIconImage(icon.getImage());
+        }
 
         try {
             UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
@@ -1056,11 +1062,14 @@ public class FormPage extends JFrame{
                 }
                 else{
                     Error.setForeground(Color.GREEN);
-                    Error.setText("Form is Submited");
-                    clearError(3000);
+                    String check = JDBC.addGrievance(user,selected,sub,Nm,mob,email,decs,ex1,ex2,ex3,ex4);
+                    if(check.equals("0")){
+                        Error.setText("Error");
                 }
             }
+        }
         });
+        
 
         Clear.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){

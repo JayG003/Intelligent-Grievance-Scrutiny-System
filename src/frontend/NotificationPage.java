@@ -52,6 +52,11 @@ public class NotificationPage extends JFrame{
         setLocationRelativeTo(null);
         setResizable(true);
 
+        ImageIcon icon = new ImageIcon(getClass().getResource("/images/logo.png"));
+        if (icon.getIconWidth() > 0) {
+            setIconImage(icon.getImage());
+        }
+
         try {
             UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
         } catch (Exception e) {
