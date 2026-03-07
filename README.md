@@ -36,15 +36,15 @@ The Intelligent Grievance Scrutiny and Decision Support System aims to improve t
 
 ## Project Status
 
-In development
-Login page addes succesfully
-Registration page addes succesfully
-Reset Password page addes succesfully
-Dashboard page addes succesfully
-New grivance submission page addes succesfully
-Grievance form page addes succesfully
-My grievances page addes succesfully
-Notification page addes succesfully
+In development<br>
+Login page addes succesfully<br>
+Registration page addes succesfully<br>
+Reset Password page addes succesfully<br>
+Dashboard page addes succesfully<br>
+New grivance submission page addes succesfully<br>
+Grievance form page addes succesfully<br>
+My grievances page addes succesfully<br>
+Notification page addes succesfully<br>
 
 ## Running the project (only for no IDE run)
 
