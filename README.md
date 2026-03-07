@@ -38,3 +38,28 @@ The Intelligent Grievance Scrutiny and Decision Support System aims to improve t
 
 In development
 Login page addes succesfully
+Registration page addes succesfully
+Reset Password page addes succesfully
+Dashboard page addes succesfully
+New grivance submission page addes succesfully
+Grievance form page addes succesfully
+My grievances page addes succesfully
+Notification page addes succesfully
+
+## Running the project (only for no IDE run)
+
+- clone the repo in local device
+- use the schema in databse folder to create databse in your local device
+- use terminal and get inside the filer "Intelligent-Grievance-Scrutiny-System"
+- use "javac -d bin src\*.java src\database\*.java src\frontend\*.java"  this command
+- after successful compilation use
+- "java -cp "bin;add postgres JDBC driver path here" src.Main"
+
+## Creating database
+
+- use schema in the database folder
+- open postgresql
+- create database named "grievance_db"
+- create tables named users and grievances
+- insert values in thod tables
+Thats it.
