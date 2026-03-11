@@ -384,25 +384,25 @@ public class MyGrievancePage extends JFrame{
         fgbc.insets = new Insets(30, 0, 50, 20);
         FormP.add(filter,fgbc);
 
-        String[] columns = {"Member ID", "Member Name", "Mobile", "Adress"};
+        String[] columns = {
+            "Grievance ID",
+            "Applicant Name",
+            "Mobile",
+            "Organization",
+            "Subject",
+            "Priority",
+            "Status"
+        };
+
         String[][] data = {
-            {"M001", "John Doe", "B102", "Introduction to Java"},
-            {"M002", "Jane Smith", "B107", "Database Systems"},
-            {"M003", "Robert Brown", "B123", "Algorithms Design"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
+            {"11", "Jay Ware", "9850240096", "Educational", "Academic Issue", "Low", "Open"},
+            {"12", "Rohit Sharma", "9123456780", "Educational", "Result Correction", "Medium", "Pending"},
+            {"13", "Priya Patel", "9012345678", "Healthcare", "Hospital Staff Behaviour", "High", "Open"},
+            {"14", "Amit Verma", "9876501234", "Government Scheme", "Application Rejected", "Medium", "Resolved"},
+            {"15", "Sneha Kulkarni", "9765432109", "Educational", "Hall Ticket Issue", "High", "Pending"},
+            {"16", "Arjun Mehta", "9345678901", "Municipal", "Water Supply Issue", "Low", "Resolved"},
+            {"17", "Karan Singh", "9234567890", "Transport", "Bus Pass Problem", "Medium", "Open"},
+            {"18", "Neha Joshi", "9988776655", "Educational", "Internal Marks Mismatch", "High", "Pending"}
         };
 
         table = new JTable(new DefaultTableModel(data, columns));
@@ -594,12 +594,8 @@ public class MyGrievancePage extends JFrame{
         profileBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(
-                    null,
-                    "Profile feature is in progress",
-                    "messege",
-                    JOptionPane.INFORMATION_MESSAGE
-                );
+                new ProfilePage(user,role);
+                dispose();
             }
         });
         logoutBtn.addActionListener(new ActionListener() {
