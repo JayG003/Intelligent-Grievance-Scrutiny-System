@@ -619,12 +619,8 @@ public class SelectOrg extends JFrame{
         profileBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(
-                    null,
-                    "Profile feature is in progress",
-                    "messege",
-                    JOptionPane.INFORMATION_MESSAGE
-                );
+                new ProfilePage(user,role);
+                dispose();
             }
         });
         logoutBtn.addActionListener(new ActionListener() {
