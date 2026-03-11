@@ -323,7 +323,8 @@ public class LoginPage extends JFrame{
                     if (check.equals("ADMIN")) {
                         errorLabel.setForeground(Color.GREEN);
                         errorLabel.setText("Admin Login");
-                        JOptionPane.showMessageDialog(LoginPage.this, "Login Successful!But feature in progress", "Success", JOptionPane.INFORMATION_MESSAGE);
+                        new AdminDashboard(UN, "Admin");
+                        dispose();
                     } else if (check.equals("user")) {
                         errorLabel.setForeground(Color.GREEN);
                         errorLabel.setText("user Login");
@@ -332,7 +333,8 @@ public class LoginPage extends JFrame{
                     } else if (check.equals("manager")) {
                         errorLabel.setForeground(Color.GREEN);
                         errorLabel.setText("Manager Login");
-                        JOptionPane.showMessageDialog(LoginPage.this, "Login Successful!But feature in progress", "Success", JOptionPane.INFORMATION_MESSAGE);
+                        new ManagerDashboard(UN, "Manager");
+                        dispose();
                     } else if (check.equals("1")) {
                         errorLabel.setText("User not found");
                     } else if (check.equals("2")) {
