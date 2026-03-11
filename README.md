@@ -21,7 +21,7 @@ The Intelligent Grievance Scrutiny and Decision Support System aims to improve t
 
 ## User Roles
 
-- User
+- Grievancer
 - Grievance Manager
 - Admin
 
@@ -36,15 +36,30 @@ The Intelligent Grievance Scrutiny and Decision Support System aims to improve t
 
 ## Project Status
 
-In development<br>
+<h3>In development</h3><br>
 Login page addes succesfully<br>
 Registration page addes succesfully<br>
 Reset Password page addes succesfully<br>
+
+<br><b>Grievancer</b><br>
 Dashboard page addes succesfully<br>
 New grivance submission page addes succesfully<br>
 Grievance form page addes succesfully<br>
 My grievances page addes succesfully<br>
 Notification page addes succesfully<br>
+Profile page addes succesfully<br>
+
+<br><b>Grievance Manager</b><br>
+Dashboard page addes succesfully<br>
+View grievances page addes succesfully<br>
+Profile page addes succesfully<br>
+
+<br><b>Admin</b><br>
+Dashboard page addes succesfully<br>
+Manage Users page addes succesfully<br>
+View grievances page addes succesfully<br>
+Profile page addes succesfully<br>
+
 
 ## Running the project (only for no IDE run)
 
@@ -61,5 +76,5 @@ Notification page addes succesfully<br>
 - open postgresql
 - create database named "grievance_db"
 - create tables named users and grievances
-- insert values in thod tables
+<br>
 Thats it.
