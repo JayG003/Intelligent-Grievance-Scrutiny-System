@@ -352,25 +352,23 @@ public class NotificationPage extends JFrame{
 
         RPanel.add(FormP, rgbc);
 
-        String[] columns = {"Member ID", "Member Name", "Mobile", "Adress"};
+        String[] columns = {
+            "Notification ID",
+            "Grievance ID",
+            "Message",
+            "Status",
+            "Date"
+        };
+
         String[][] data = {
-            {"M001", "John Doe", "B102", "Introduction to Java"},
-            {"M002", "Jane Smith", "B107", "Database Systems"},
-            {"M003", "Robert Brown", "B123", "Algorithms Design"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
-            {"M004", "Emily Clark", "B110", "Web Development"},
+            {"N001", "11", "Your grievance has been received and is under review.", "Open", "07-03-2026"},
+            {"N002", "12", "Your grievance has been assigned to the concerned department.", "Pending", "07-03-2026"},
+            {"N003", "13", "Additional information has been requested for your grievance.", "Pending", "08-03-2026"},
+            {"N004", "14", "Your grievance has been successfully resolved.", "Resolved", "08-03-2026"},
+            {"N005", "15", "Your grievance priority has been updated by the manager.", "Open", "08-03-2026"},
+            {"N006", "16", "Your grievance is currently being reviewed by the authority.", "Pending", "09-03-2026"},
+            {"N007", "17", "Your grievance has been forwarded to the transport department.", "Open", "09-03-2026"},
+            {"N008", "18", "Your grievance has been resolved. Please check the resolution details.", "Resolved", "09-03-2026"}
         };
 
         table = new JTable(new DefaultTableModel(data, columns));
@@ -579,12 +577,8 @@ public class NotificationPage extends JFrame{
         profileBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(
-                    null,
-                    "Profile feature is in progress",
-                    "messege",
-                    JOptionPane.INFORMATION_MESSAGE
-                );
+                new ProfilePage(user,role);
+                dispose();
             }
         });
         logoutBtn.addActionListener(new ActionListener() {
