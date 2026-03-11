@@ -1028,12 +1028,8 @@ public class FormPage extends JFrame{
         });
         profileBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(
-                    null,
-                    "Profile feature is in progress",
-                    "messege",
-                    JOptionPane.INFORMATION_MESSAGE
-                );
+                new ProfilePage(user,role);
+                dispose();
             }
         });
         logoutBtn.addActionListener(new ActionListener() {
