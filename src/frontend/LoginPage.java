@@ -339,6 +339,8 @@ public class LoginPage extends JFrame{
                         errorLabel.setText("User not found");
                     } else if (check.equals("2")) {
                         errorLabel.setText("Wrong Password!");
+                    } else if (check.equals("3")) {
+                        errorLabel.setText("User Blocked Administrative Permission needed");
                     }
                 }
                 clearError(3000);
@@ -363,7 +365,7 @@ public class LoginPage extends JFrame{
         });
         Register.addMouseListener(new MouseAdapter(){
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                Register.setForeground(new Color(0, 225, 255));
+                Register.setForeground(new Color(150, 225, 255));
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 Register.setForeground(new Color(0, 195, 255));
@@ -376,7 +378,7 @@ public class LoginPage extends JFrame{
         });
         ForgetPass.addMouseListener(new MouseAdapter(){
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                ForgetPass.setForeground(new Color(255, 175, 0));
+                ForgetPass.setForeground(new Color(255, 175, 150));
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 ForgetPass.setForeground(new Color(255, 153, 0));
@@ -446,7 +448,6 @@ public class LoginPage extends JFrame{
         timer.setRepeats(false); // run only once
         timer.start();
     }
-
     public static void main(String[] args) {
         new LoginPage();
     }

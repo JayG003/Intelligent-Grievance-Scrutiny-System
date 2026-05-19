@@ -1,8 +1,9 @@
 package frontend;
 
-import javax.swing.*;
+import database.JDBC;
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
@@ -41,10 +42,15 @@ public class ViewGrievances extends JFrame{
     
     String user;
     String role;
+    String[][] fullData;
 
     ViewGrievances(String usern, String userRole){
         this.user = usern;
         this.role = userRole;
+
+        JDBC db = new JDBC();
+        fullData =  db.getUserGrievances(usern);
+
         initializeFrame();
         AddPanels();
         setVisible(true);
@@ -159,6 +165,27 @@ public class ViewGrievances extends JFrame{
         lgbc.fill = GridBagConstraints.HORIZONTAL;
         lgbc.insets = new Insets(2, 10, 2, 10);
         SideBar.add(mygrievBtn,lgbc);
+
+        ImageIcon btn4 = new ImageIcon(getClass().getResource("/images/bell.png"));
+        Image img4 = btn4.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+        notifyBtn = new JButton(" Notifications", new ImageIcon(img4));
+        notifyBtn.setHorizontalAlignment(SwingConstants.LEFT);
+        notifyBtn.setIconTextGap(15);
+        notifyBtn.setFocusPainted(false);
+        notifyBtn.setBorderPainted(true);
+        notifyBtn.setContentAreaFilled(false);
+        notifyBtn.setBorder(
+            BorderFactory.createCompoundBorder(
+                new LineBorder(new Color(2, 6, 23), 2),
+                new EmptyBorder(8, 15, 8, 10)
+            )
+        );
+        notifyBtn.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+        notifyBtn.setForeground(Color.WHITE);
+        lgbc.gridy = 3;
+        lgbc.fill = GridBagConstraints.HORIZONTAL;
+        lgbc.insets = new Insets(2, 10, 2, 10);
+        SideBar.add(notifyBtn,lgbc);
         
         ImageIcon btn5 = new ImageIcon(getClass().getResource("/images/profile.png"));
         Image img5 = btn5.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
@@ -328,9 +355,9 @@ public class ViewGrievances extends JFrame{
         FormP.add(searcBtn, fgbc);
         
         String[] catagories = {
-                "Filter By Status",
-                "High",
-                "Low",
+        "Filter By Priority",
+        "High",
+        "Low",
         };
         
         Categoryl = new JComboBox<>(catagories);
@@ -347,10 +374,11 @@ public class ViewGrievances extends JFrame{
         
         String[] catagories1 = {
                 "Filter By Status",
-                "Pending",
-                "Under Review",
+                "Unattended",
+                "Under Scrutiny",
                 "Resolved",
-                "Rejected"
+                "Rejected",
+                "Canceled"
         };
 
         Categoryl1 = new JComboBox<>(catagories1);
@@ -376,24 +404,29 @@ public class ViewGrievances extends JFrame{
             "Grievance ID",
             "Applicant Name",
             "Mobile",
-            "Organization",
             "Subject",
             "Priority",
-            "Status"
+            "Status",
         };
 
-        String[][] data = {
-            {"11", "Jay Ware", "9850240096", "Educational", "Academic Issue", "Low", "Open"},
-            {"12", "Rohit Sharma", "9123456780", "Educational", "Result Correction", "Medium", "Pending"},
-            {"13", "Priya Patel", "9012345678", "Healthcare", "Hospital Staff Behaviour", "High", "Open"},
-            {"14", "Amit Verma", "9876501234", "Government Scheme", "Application Rejected", "Medium", "Resolved"},
-            {"15", "Sneha Kulkarni", "9765432109", "Educational", "Hall Ticket Issue", "High", "Pending"},
-            {"16", "Arjun Mehta", "9345678901", "Municipal", "Water Supply Issue", "Low", "Resolved"},
-            {"17", "Karan Singh", "9234567890", "Transport", "Bus Pass Problem", "Medium", "Open"},
-            {"18", "Neha Joshi", "9988776655", "Educational", "Internal Marks Mismatch", "High", "Pending"}
-        };
+        Object[][] data = JDBC.getFilteredGrievances(user, role, null, null, null);
 
-        table = new JTable(new DefaultTableModel(data, columns));
+        DefaultTableModel model = new DefaultTableModel(columns, 0);
+        for(int i = 0; i < data.length; i++){
+
+            if(data[i][0] == null) break;
+
+                model.addRow(new Object[]{
+                    data[i][0],
+                    data[i][1],
+                    data[i][2],
+                    data[i][4],
+                    data[i][5],
+                    data[i][6],
+            });
+        }
+
+        table = new JTable(model);
         table.getTableHeader().setPreferredSize(new Dimension(0,40));
         table.getTableHeader().setBackground(new Color(30, 41, 59));
         table.getTableHeader().setForeground(new Color(248, 250, 252));
@@ -487,6 +520,27 @@ public class ViewGrievances extends JFrame{
                 mygrievBtn.setBackground(new Color(96,165,250));
             }
         });
+
+        notifyBtn.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) {
+                notifyBtn.setBorderPainted(true);
+                notifyBtn.setBorder(
+                    BorderFactory.createCompoundBorder(
+                        new LineBorder(new Color(60,120,200), 2),
+                        new EmptyBorder(8, 15, 8, 10)
+                    )
+                );
+            }
+            public void mouseExited(MouseEvent e) {
+                notifyBtn.setBorderPainted(true);
+                notifyBtn.setBorder(
+                    BorderFactory.createCompoundBorder(
+                        new LineBorder(new Color(2, 6, 23), 2),
+                        new EmptyBorder(8, 15, 8, 10)
+                    )
+                );
+            }
+        });
         
         profileBtn.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent e) {
@@ -530,7 +584,6 @@ public class ViewGrievances extends JFrame{
         });
 
         //================ACTION LISTNERS=================//
-
         dashBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -538,6 +591,14 @@ public class ViewGrievances extends JFrame{
                 dispose();
             }
         });
+        notifyBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ManagerNotification(user, role);
+                dispose();
+            }
+        });
+        
         profileBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -552,6 +613,114 @@ public class ViewGrievances extends JFrame{
                 dispose();
             }
         });
+        filter1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                String priority = Categoryl.getSelectedItem().toString();
+                String status = Categoryl1.getSelectedItem().toString();
+
+                
+                JDBC db = new JDBC();
+                String[] org = db.getUserDetails(user);
+                
+                Object[][] data = db.getFilteredGrievances(user,role, org[5],priority, status);
+
+                // 🔥 Table columns (same order hona chahiye)
+                String[] columns = {
+                    "Grievance ID",
+                    "Applicant Name",
+                    "Mobile",
+                    "Subject",
+                    "Priority",
+                    "Status"
+                };
+                DefaultTableModel model = new DefaultTableModel(columns, 0);
+                for(int i = 0; i < data.length; i++){
+
+                    if(data[i][0] == null) break;
+
+                        model.addRow(new Object[]{
+                            data[i][0],
+                            data[i][1],
+                            data[i][2],
+                            data[i][4],
+                            data[i][5],
+                            data[i][6],
+                    });
+                }
+
+                table.setModel(model);
+            }
+        });
+        filter1.doClick();
+        searcBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String keyword = searchField.getText().trim();
+
+                
+                JDBC db = new JDBC();
+                String[] org = db.getUserDetails(user);
+
+                Object[][] data = db.searchGrievances(keyword,org[5]);
+
+                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                model.setRowCount(0);
+
+                for(int i = 0; i < data.length; i++){
+                    model.addRow(new Object[]{
+                        data[i][0],
+                        data[i][1],
+                        data[i][2],
+                        data[i][3],
+                        data[i][4],
+                        data[i][5],
+                    });
+                }
+                // table.setModel(model);
+            }
+        });
+        View.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+                int row = table.getSelectedRow();
+
+                if(row == -1){
+                    JOptionPane.showMessageDialog(null, "Select a row first!");
+                    return;
+                }
+
+                String grievanceId = table.getValueAt(row, 0).toString();
+
+                // 🔥 NEW METHOD CALL
+                String[] selectedData = JDBC.getGrievanceById(grievanceId);
+
+                if(selectedData != null){
+                    new ViewGrievanceFrame(selectedData);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Grievance not found!");
+                }
+            }
+        });
+        Update.addActionListener(new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+        // 🔹 Step 1: check row selected
+        int row = table.getSelectedRow();
+
+        if (row == -1) {
+            JOptionPane.showMessageDialog(null, "⚠ Please select a grievance first!");
+            return;
+        }
+
+        // 🔹 Step 2: get grievance ID
+        String grievanceId = table.getValueAt(row, 0).toString();
+
+        // 🔹 Step 3: open update frame
+        new UpdateGrievanceFrame(Integer.parseInt(grievanceId));
+    }
+});
     }
     public static void main(String[] args) {
         new ViewGrievances("user", "Grievancer");

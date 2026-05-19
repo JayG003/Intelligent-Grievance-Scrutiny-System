@@ -1,11 +1,13 @@
 package frontend;
 
-import javax.swing.*;
+import database.JDBC;
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
+import org.w3c.dom.events.MouseEvent;
 
 public class ManageUsers extends JFrame{
     public JPanel LPanel;
@@ -264,13 +266,20 @@ public class ManageUsers extends JFrame{
         JPanel filterRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
         filterRow.setOpaque(false);
 
-        String[] roles = {"All", "Users", "Managers"};
+        String[] roles = {"All", "User", "Manager"};
         JComboBox<String> roleFilter = new JComboBox<>(roles);
         roleFilter.setBackground(new Color(40, 40, 50));
         roleFilter.setForeground(Color.WHITE);
-        roleFilter.setPreferredSize(new Dimension(160,28));
+        roleFilter.setPreferredSize(new Dimension(120,28));
         filterRow.add(new JLabel("Filter Role") {{ setForeground(Color.LIGHT_GRAY); }});
         filterRow.add(roleFilter);
+
+        JButton Filter1 = new JButton("Filter");
+        Filter1.setBackground(new Color(59, 130, 246));
+        Filter1.setForeground(Color.WHITE);
+        Filter1.setFocusPainted(false);
+        Filter1.setBorder(BorderFactory.createEmptyBorder(8, 10, 8, 5));
+        filterRow.add(Filter1);
 
         searchField = new JTextField(20);
         searchField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
@@ -327,16 +336,28 @@ public class ManageUsers extends JFrame{
         fgbc.insets = new Insets(20, 20, 10, 20);
         FormP.add(filterRow, fgbc);
 
-        String[] columns = {"User ID", "Name", "Email", "Mobile", "Role", "Status", "Action"};
-        Object[][] data = {
-            {"USR-001", "John Doe", "john.doe@email.com", "555-0101", "USER", "ACTIVE", "Actions..."},
-            {"MGR-002", "Alice Smith", "alice.smith@email.com", "555-0102", "MANAGER", "ACTIVE", "Actions..."},
-            {"USR-004", "Eve Williams", "eve.williams@email.com", "555-0104", "USER", "DISABLED", "Actions..."}
-        };
+        String[] columns = {"User ID", "User Name", "Name", "Email", "Mobile", "Role", "Status"};
+        JDBC db = new JDBC();
+        String[][] data = db.getAllUsers();
 
-        DefaultTableModel model = new DefaultTableModel(data, columns);
+        DefaultTableModel model = new DefaultTableModel(columns, 0);
+
+        for(int i = 0; i < data.length; i++){
+
+            if(data[i][0] == null) break;
+
+                model.addRow(new Object[]{
+                    data[i][4],
+                    data[i][5],
+                    data[i][0],
+                    data[i][1],
+                    data[i][2],
+                    data[i][3],
+                    data[i][6],
+            });
+        }
+        
         JTable table = new JTable(model);
-        table = new JTable(new DefaultTableModel(data, columns));
         table.getTableHeader().setPreferredSize(new Dimension(0,40));
         table.getTableHeader().setBackground(new Color(30, 41, 59));
         table.getTableHeader().setForeground(new Color(248, 250, 252));
@@ -513,6 +534,48 @@ public class ManageUsers extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 new Registration();
                 // dispose();
+            }
+        });
+        Filter1.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                String role = roleFilter.getSelectedItem().toString();
+                Object[][] users = JDBC.getFilteredUsers(role);
+                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                model.setRowCount(0);
+                for(int i = 0; i < users.length; i++){
+                    model.addRow(new Object[]{
+                        users[i][4], // userid
+                        users[i][5], // username
+                        users[i][0], // name
+                        users[i][1], // email
+                        users[i][2], // mobile
+                        users[i][3], // role
+                        users[i][6]  // status
+                    });
+                }
+            }
+        });
+        search.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+
+                String keyword = searchField.getText().trim();
+
+                Object[][] users = JDBC.searchUsers(keyword);
+
+                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                model.setRowCount(0);
+
+                for(int i = 0; i < users.length; i++){
+                    model.addRow(new Object[]{
+                        users[i][4],
+                        users[i][5],
+                        users[i][0],
+                        users[i][1],
+                        users[i][2],
+                        users[i][3],
+                        users[i][6]
+                    });
+                }
             }
         });
     }

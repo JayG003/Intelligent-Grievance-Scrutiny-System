@@ -1,8 +1,9 @@
 package frontend;
 
-import javax.swing.*;
+import database.JDBC;
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
@@ -36,10 +37,14 @@ public class ManagerDashboard extends JFrame{
     
     String user;
     String role;
+    int[] d;
 
     ManagerDashboard(String usern, String userRole){
         this.user = usern;
         this.role = userRole;
+
+        d = JDBC.getManagerDashboard(user);
+
         initializeFrame();
         AddPanels();
         setVisible(true);
@@ -129,27 +134,6 @@ public class ManagerDashboard extends JFrame{
         lgbc.anchor = GridBagConstraints.NORTHWEST;
         SideBar.add(dashBtn,lgbc);
         
-        // ImageIcon btn2 = new ImageIcon(getClass().getResource("/images/form.png"));
-        // Image img2 = btn2.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-        // grievBtn = new JButton(" Submite Grievance", new ImageIcon(img2));
-        // grievBtn.setHorizontalAlignment(SwingConstants.LEFT);
-        // grievBtn.setIconTextGap(15);
-        // grievBtn.setFocusPainted(false);
-        // grievBtn.setBorderPainted(false);
-        // grievBtn.setContentAreaFilled(false);
-        // grievBtn.setBorder(
-        //     BorderFactory.createCompoundBorder(
-        //         new LineBorder(new Color(2, 6, 23), 2),
-        //         new EmptyBorder(8, 15, 8, 10)
-        //     )
-        // );
-        // grievBtn.setFont(new Font("Segoe UI", Font.PLAIN, 15));
-        // grievBtn.setForeground(Color.WHITE);
-        // lgbc.gridy = 1;
-        // lgbc.fill = GridBagConstraints.HORIZONTAL;
-        // lgbc.insets = new Insets(2, 10, 2, 10);
-        // SideBar.add(grievBtn,lgbc);
-        
         ImageIcon btn3 = new ImageIcon(getClass().getResource("/images/mygrivances.png"));
         Image img3 = btn3.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
         mygrievBtn = new JButton(" View Grievances", new ImageIcon(img3));
@@ -171,27 +155,27 @@ public class ManagerDashboard extends JFrame{
         lgbc.fill = GridBagConstraints.HORIZONTAL;
         lgbc.insets = new Insets(2, 10, 2, 10);
         SideBar.add(mygrievBtn,lgbc);
-        
-        // ImageIcon btn4 = new ImageIcon(getClass().getResource("/images/bell.png"));
-        // Image img4 = btn4.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-        // notifyBtn = new JButton(" Notifications", new ImageIcon(img4));
-        // notifyBtn.setHorizontalAlignment(SwingConstants.LEFT);
-        // notifyBtn.setIconTextGap(15);
-        // notifyBtn.setFocusPainted(false);
-        // notifyBtn.setBorderPainted(true);
-        // notifyBtn.setContentAreaFilled(false);
-        // notifyBtn.setBorder(
-        //     BorderFactory.createCompoundBorder(
-        //         new LineBorder(new Color(2, 6, 23), 2),
-        //         new EmptyBorder(8, 15, 8, 10)
-        //     )
-        // );
-        // notifyBtn.setFont(new Font("Segoe UI", Font.PLAIN, 15));
-        // notifyBtn.setForeground(Color.WHITE);
-        // lgbc.gridy = 3;
-        // lgbc.fill = GridBagConstraints.HORIZONTAL;
-        // lgbc.insets = new Insets(2, 10, 2, 10);
-        // SideBar.add(notifyBtn,lgbc);
+
+        ImageIcon btn4 = new ImageIcon(getClass().getResource("/images/bell.png"));
+        Image img4 = btn4.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+        notifyBtn = new JButton(" Notifications", new ImageIcon(img4));
+        notifyBtn.setHorizontalAlignment(SwingConstants.LEFT);
+        notifyBtn.setIconTextGap(15);
+        notifyBtn.setFocusPainted(false);
+        notifyBtn.setBorderPainted(true);
+        notifyBtn.setContentAreaFilled(false);
+        notifyBtn.setBorder(
+            BorderFactory.createCompoundBorder(
+                new LineBorder(new Color(2, 6, 23), 2),
+                new EmptyBorder(8, 15, 8, 10)
+            )
+        );
+        notifyBtn.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+        notifyBtn.setForeground(Color.WHITE);
+        lgbc.gridy = 3;
+        lgbc.fill = GridBagConstraints.HORIZONTAL;
+        lgbc.insets = new Insets(2, 10, 2, 10);
+        SideBar.add(notifyBtn,lgbc);
         
         ImageIcon btn5 = new ImageIcon(getClass().getResource("/images/profile.png"));
         Image img5 = btn5.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
@@ -317,7 +301,7 @@ public class ManagerDashboard extends JFrame{
         c1.setLayout(new BoxLayout(c1, BoxLayout.Y_AXIS));
         c1.setBackground(new Color(31,41,55));
         c1.setBorder(new EmptyBorder(20,20,20,20));
-        n1 = new JLabel("12");
+        n1 = new JLabel(String.valueOf(d[0]));
         n1.setFont(new Font("Segoe UI", Font.BOLD, 28));
         n1.setForeground(new Color(59, 130, 246));
         n1.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -334,12 +318,12 @@ public class ManagerDashboard extends JFrame{
         // c2.setBackground(new Color(35,35,50));
         c2.setBackground(new Color(31,41,55));
         c2.setBorder(new EmptyBorder(20,20,20,20));
-        n2 = new JLabel("3");
+        n2 = new JLabel(String.valueOf(d[1]));
         n2.setFont(new Font("Segoe UI", Font.BOLD, 28));
         // n2.setForeground(Color.WHITE);
         n2.setForeground(new Color(139, 92, 246));
         n2.setAlignmentX(Component.CENTER_ALIGNMENT);
-        t2 = new JLabel("Pending");
+        t2 = new JLabel("Unattended");
         // t2.setForeground(Color.LIGHT_GRAY);
         t2.setForeground(new Color(139, 92, 246));
         t2.setFont(new Font("Segoe UI", Font.BOLD, 14));
@@ -353,7 +337,7 @@ public class ManagerDashboard extends JFrame{
         // c3.setBackground(new Color(35,35,50));
         c3.setBackground(new Color(31,41,55));
         c3.setBorder(new EmptyBorder(20,20,20,20));
-        n3 = new JLabel("7");
+        n3 = new JLabel(String.valueOf(d[2]));
         n3.setFont(new Font("Segoe UI", Font.BOLD, 28));
         // n3.setForeground(Color.WHITE);
         n3.setForeground(new Color(34, 197, 94));
@@ -372,7 +356,7 @@ public class ManagerDashboard extends JFrame{
         // c4.setBackground(new Color(35,35,50));
         c4.setBackground(new Color(31,41,55));
         c4.setBorder(new EmptyBorder(20,20,20,20));
-        n4 = new JLabel("2");
+        n4 = new JLabel(String.valueOf(d[3]));
         n4.setFont(new Font("Segoe UI", Font.BOLD, 28));
         // n4.setForeground(Color.WHITE);
         n4.setForeground(new Color(245, 158, 11));
@@ -408,24 +392,29 @@ public class ManagerDashboard extends JFrame{
             "Grievance ID",
             "Applicant Name",
             "Mobile",
-            "Organization",
             "Subject",
             "Priority",
             "Status"
         };
 
-        String[][] data = {
-            {"11", "Jay Ware", "9850240096", "Educational", "Academic Issue", "Low", "Open"},
-            {"12", "Rohit Sharma", "9123456780", "Educational", "Result Correction", "Medium", "Pending"},
-            {"13", "Priya Patel", "9012345678", "Healthcare", "Hospital Staff Behaviour", "High", "Open"},
-            {"14", "Amit Verma", "9876501234", "Government Scheme", "Application Rejected", "Medium", "Resolved"},
-            {"15", "Sneha Kulkarni", "9765432109", "Educational", "Hall Ticket Issue", "High", "Pending"},
-            {"16", "Arjun Mehta", "9345678901", "Municipal", "Water Supply Issue", "Low", "Resolved"},
-            {"17", "Karan Singh", "9234567890", "Transport", "Bus Pass Problem", "Medium", "Open"},
-            {"18", "Neha Joshi", "9988776655", "Educational", "Internal Marks Mismatch", "High", "Pending"}
-        };
+        Object[][] data = JDBC.getFilteredGrievances(user, role, null, null, null);
 
-        table = new JTable(new DefaultTableModel(data, columns));
+        DefaultTableModel model = new DefaultTableModel(columns, 0);
+        for(int i = 0; i < data.length; i++){
+
+            if(data[i][0] == null) break;
+
+                model.addRow(new Object[]{
+                    data[i][0],
+                    data[i][1],
+                    data[i][2],
+                    data[i][4],
+                    data[i][5],
+                    data[i][6],
+            });
+        }
+
+        table = new JTable(model);
         table.getTableHeader().setPreferredSize(new Dimension(0,40));
         table.getTableHeader().setBackground(new Color(30, 41, 59));
         table.getTableHeader().setForeground(new Color(248, 250, 252));
@@ -483,6 +472,26 @@ public class ManagerDashboard extends JFrame{
                 );
             }
         });
+        notifyBtn.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) {
+                notifyBtn.setBorderPainted(true);
+                notifyBtn.setBorder(
+                    BorderFactory.createCompoundBorder(
+                        new LineBorder(new Color(60,120,200), 2),
+                        new EmptyBorder(8, 15, 8, 10)
+                    )
+                );
+            }
+            public void mouseExited(MouseEvent e) {
+                notifyBtn.setBorderPainted(true);
+                notifyBtn.setBorder(
+                    BorderFactory.createCompoundBorder(
+                        new LineBorder(new Color(2, 6, 23), 2),
+                        new EmptyBorder(8, 15, 8, 10)
+                    )
+                );
+            }
+        });
 
         profileBtn.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent e) {
@@ -532,6 +541,13 @@ public class ManagerDashboard extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 new ViewGrievances(user, role);
+                dispose();
+            }
+        });
+        notifyBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ManagerNotification(user, role);
                 dispose();
             }
         });

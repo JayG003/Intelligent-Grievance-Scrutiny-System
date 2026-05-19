@@ -1,8 +1,9 @@
 package frontend;
 
-import javax.swing.*;
+import database.JDBC;
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
@@ -351,10 +352,10 @@ public class AViewGrievances extends JFrame{
         
         String[] catagories = {
                 "Filter By category",
-                "Education",
-                "HeathCare",
-                "Muncipal",
-                "WellFare"
+                "Educational",
+                "Health-care",
+                "Municipal",
+                "Well-Fare"
         };
         
         Categoryl = new JComboBox<>(catagories);
@@ -385,10 +386,11 @@ public class AViewGrievances extends JFrame{
         
         String[] catagories2 = {
                 "Filter By Status",
-                "Pending",
-                "Under Review",
+                "Unattended",
+                "Under Scrutiny",
                 "Resolved",
-                "Rejected"
+                "Rejected",
+                "Canceled"
         };
 
         Categoryl2 = new JComboBox<>(catagories2);
@@ -420,18 +422,26 @@ public class AViewGrievances extends JFrame{
             "Status"
         };
 
-        String[][] data = {
-            {"11", "Jay Ware", "9850240096", "Educational", "Academic Issue", "Low", "Open"},
-            {"12", "Rohit Sharma", "9123456780", "Educational", "Result Correction", "Medium", "Pending"},
-            {"13", "Priya Patel", "9012345678", "Healthcare", "Hospital Staff Behaviour", "High", "Open"},
-            {"14", "Amit Verma", "9876501234", "Government Scheme", "Application Rejected", "Medium", "Resolved"},
-            {"15", "Sneha Kulkarni", "9765432109", "Educational", "Hall Ticket Issue", "High", "Pending"},
-            {"16", "Arjun Mehta", "9345678901", "Municipal", "Water Supply Issue", "Low", "Resolved"},
-            {"17", "Karan Singh", "9234567890", "Transport", "Bus Pass Problem", "Medium", "Open"},
-            {"18", "Neha Joshi", "9988776655", "Educational", "Internal Marks Mismatch", "High", "Pending"}
-        };
+        JDBC db = new JDBC();
+        String[][] data = db.getUserGrievances(user);
 
-        table = new JTable(new DefaultTableModel(data, columns));
+        DefaultTableModel model = new DefaultTableModel(columns, 0);
+
+        for(int i = 0; i < data.length; i++){
+
+            if(data[i][0] == null) break;
+
+                model.addRow(new Object[]{
+                    data[i][0],
+                    data[i][1],
+                    data[i][2],
+                    data[i][3],
+                    data[i][4],
+                    data[i][5],
+                    data[i][6]
+            });
+        }
+        table = new JTable(model);
         table.getTableHeader().setPreferredSize(new Dimension(0,40));
         table.getTableHeader().setBackground(new Color(30, 41, 59));
         table.getTableHeader().setForeground(new Color(248, 250, 252));
@@ -451,6 +461,7 @@ public class AViewGrievances extends JFrame{
         scrollPane.setBorder(BorderFactory.createLineBorder(new Color(55,65,81)));
         scrollPane.setBorder(null);
         scrollPane.setPreferredSize(new Dimension(0,350));
+
 
         fgbc.gridy = 2;
         fgbc.gridx = 0;
@@ -580,6 +591,34 @@ public class AViewGrievances extends JFrame{
                 dispose();
             }
         });
+        filter1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                String category = Categoryl.getSelectedItem().toString();
+                String priority = Categoryl1.getSelectedItem().toString();
+                String status = Categoryl2.getSelectedItem().toString();
+
+                // 🔥 DAO call
+                Object[][] data = database.JDBC.getFilteredGrievances(user,role,category, priority, status);
+
+                // 🔥 Table columns (same order hona chahiye)
+                String[] columns = {
+                    "Grievance ID",
+                    "Applicant Name",
+                    "Mobile",
+                    "Subject",
+                    "Organization",
+                    "Status",
+                    "Priority"
+                };
+
+                // 🔥 Table update
+                DefaultTableModel model = new DefaultTableModel(data, columns);
+                table.setModel(model);
+            }
+        });
+        filter1.doClick();
     }
     public static void main(String[] args) {
         new AViewGrievances("user", "Grievancer");
